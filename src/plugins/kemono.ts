@@ -121,11 +121,19 @@ export async function downloadUser(keywords: string[]) {
                 path: postInfo.file.path,
             });
 
+            const t = new Date(postInfo.published);
+            const timeStr = `${t.getFullYear()}-${t.getMonth()+1}-${t.getDate()}`
+
+            if (!fs.existsSync(`${_path}/${config.downloadFile}/kemono/${service}/${uid}/${timeStr}${postInfo.title}`)) {
+                log.warn(`${_path}/${config.downloadFile}/kemono/${service}/${uid}/${timeStr}${postInfo.title} 文件夹未存在，准备创建`);
+                fs.mkdirSync(`${_path}/${config.downloadFile}/kemono/${service}/${uid}/${timeStr}${postInfo.title}`, { recursive: true });
+            }
+
             for (const [index, atta] of postInfo.attachments.entries()) {
                 const shortFileName = `${postInfo.id}_p${index}${path.extname(" " + atta.name)}`;
-                const shortFilePath = `${_path}/${config.downloadFile}/kemono/${service}/${uid}/${shortFileName}`;
+                const shortFilePath = `${_path}/${config.downloadFile}/kemono/${service}/${uid}/${timeStr}${postInfo.title}/${shortFileName}`;
                 const fullFileName = `${postInfo.id}_p${index}_${atta.name}`;
-                const fullFilePath = `${_path}/${config.downloadFile}/kemono/${service}/${uid}/${fullFileName}`;
+                const fullFilePath = `${_path}/${config.downloadFile}/kemono/${service}/${uid}/${timeStr}${postInfo.title}/${fullFileName}`;
                 files.push({
                     srcName: atta.name,
                     fileUrl: serverURL + atta.path,
