@@ -123,7 +123,7 @@ export async function downloadUser(keywords: string[]) {
             const title = postInfo.title.replaceAll(/[\\\/\?\:\*\"\<\>\|]/g, '');
 
             const t = new Date(postInfo.published);
-            const timeStr = `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2, '0')}-${t.getDate()}`
+            const timeStr = `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`
 
             if (!fs.existsSync(`${_path}/${config.downloadFile}/kemono/${service}/${uid}/${timeStr}`)) {
                 log.warn(`${_path}/${config.downloadFile}/kemono/${service}/${uid}/${timeStr} 文件夹未存在，准备创建`);
